@@ -1,7 +1,6 @@
 import psycopg2
 from datetime import datetime
 from config import MindSphere
-import json
 
 mindsphere = MindSphere(app_Name="<YOUR_APP_NAME>", #app_name
                         app_Version="<YOUR_APP_VERSION>", #v1.0.0
@@ -10,7 +9,6 @@ mindsphere = MindSphere(app_Name="<YOUR_APP_NAME>", #app_name
                         client_ID="<YOUR_Client_ID>", 
                         client_Secret="YOUR_CLIENT_SECRET"
                         )
-
 
 assetId = "<YOUR_ASSET_ID>" #insira aqui o assetID do seu asset
 aspectName = "<YOUR_ASPECT_NAME>" #insira aqui o aspectName do seu asset
@@ -34,7 +32,23 @@ def connect_to_db():
         return None
 
 #criando a tabela (caso não exista ainda)
+'''def create_table(conn):
+    try:
+        cur = conn.cursor()
+        cur.execute("""
+            CREATE TABLE IF NOT EXISTS timeseries (
+                id SERIAL PRIMARY KEY,
+                variavel TEXT NOT NULL,
+                valor INTEGER NOT NULL,
+                timestamp TEXT NOT NULL
+            );
+        conn.commit()
+        cur.close()
+        print('tabela criada')
+    except Exception as e:
+        print(f"Erro ao criar tabela: {e}")'''
 
+#editando a tabela
 '''def create_table(conn):
     try:
         cur = conn.cursor()
@@ -48,7 +62,7 @@ def connect_to_db():
     except Exception as e:
         print(f"Erro ao criar tabela: {e}")'''
 
-#inserir dados
+#inserir dados manual
 '''def insert_data(conn, nome, valor):
     try:
         cur = conn.cursor()
@@ -74,12 +88,8 @@ def insert_timeseries(conn, data):
         conn.rollback()
 
 # Exemplo de uso
-data = [{'temp': 50, 'velo': 90.0, '_time': '2024-01-07T03:02:03.431Z'}]
+#data = [{'temp': 50, 'velo': 90.0, '_time': '2024-01-07T03:02:03.431Z'}]
 data2 = mindsphere.getTimeSeries(assetId,aspectName,"","")
-'''conn = connect_to_db()
-insert_timeseries(conn, data)
-conn.close()'''
-
 
 #ler dados
 def read_data(conn):
