@@ -15,7 +15,7 @@ applications:
     HOST_ENVIRONMENT: eu1 #If not specified, HOST_ENVIRONMENT defaults to eu1 in region Europe 1 SDK and to cn1 in region China 1 SDK.
     MDSP_HOST_TENANT: debr2 #tenant name on which application is hosted    
     MDSP_USER_TENANT: debr2  #tenant name which is using the application hosted on MDSP_HOST_TENANT
-    MDSP_OS_VM_APP_NAME: PythonScript #internal name of application provided in Developer Cockpit
-    MDSP_OS_VM_APP_VERSION: <YOUR-APPLICATION-VERSION--HERE> #application version provided in Developer Cockpit at a time of application creation.
-    MDSP_KEY_STORE_CLIENT_ID: <YOUR-CLIENT-ID-HERE> #CLIENT_ID of application received from `App Credentials` in Developer Cockpit
-    MDSP_KEY_STORE_CLIENT_SECRET: <YOUR-HOST-TENANT-HERE> #CLIENT_SECRET of application received from `App Credentials` in Developer Cockpit
+    MDSP_OS_VM_APP_NAME: cardapiodigita20 #internal name of application provided in Developer Cockpit
+    MDSP_OS_VM_APP_VERSION: v1.0.0 #application version provided in Developer Cockpit at a time of application creation.
+    MDSP_KEY_STORE_CLIENT_ID: debr2-cardapiodigita20-v1.0.0 #CLIENT_ID of application received from `App Credentials` in Developer Cockpit
+    MDSP_KEY_STORE_CLIENT_SECRET: KhMlcZVzS8YlfvfuCPDSdENRCEE6gvSaFTadq90kVZ9 #CLIENT_SECRET of application received from `App Credentials` in Developer Cockpit

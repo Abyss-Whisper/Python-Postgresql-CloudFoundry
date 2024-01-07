@@ -20,10 +20,10 @@ print(mindsphere.getTimeSeries(assetId,aspectName,"","")) #retorna o último tim
 def connect_to_db():
     try:
         conn = psycopg2.connect(
-            dbname="python",
-            user="postgres",
-            password="admin",
-            host="localhost"
+            dbname="pod9164fc",
+            user="a9s6789382dcc59ed571f89c04d3274cb611f051ac6",
+            password="a9sdd5cde722f5f38c623b75cd1d396b71ec49db89e",
+            host="pod9164fc-psql-master-alias.node.dc1.a9ssvc"
         )
         print('conectado')
         return conn
@@ -32,22 +32,21 @@ def connect_to_db():
         return None
 
 #criando a tabela (caso não exista ainda)
-def create_table(conn):
+'''def create_table(conn):
     try:
         cur = conn.cursor()
         cur.execute("""
-            CREATE TABLE IF NOT EXISTS teste (
+            CREATE TABLE IF NOT EXISTS timeseries (
                 id SERIAL PRIMARY KEY,
                 variavel TEXT NOT NULL,
                 valor INTEGER NOT NULL,
-                timestamp TEXT NOT NULL);                
-                """
-            );
+                timestamp TEXT NOT NULL);
+            """);
         conn.commit()
-        cur.close()
         print('tabela criada')
+        cur.close()
     except Exception as e:
-        print(f"Erro ao criar tabela: {e}")
+        print(f"Erro ao criar tabela: {e}")'''
 
 #editando a tabela
 '''def create_table(conn):
@@ -81,7 +80,7 @@ def insert_timeseries(conn, data):
             timestamp = datetime.fromisoformat(item['_time'].rstrip('Z'))
             for key, value in item.items():
                 if key != '_time':
-                    cur.execute("INSERT INTO teste (variavel, valor, timestamp) VALUES (%s, %s, %s)", (key, value, timestamp))
+                    cur.execute("INSERT INTO timeseries (variavel, valor, timestamp) VALUES (%s, %s, %s)", (key, value, timestamp))
         conn.commit()
         cur.close()
     except Exception as e:
@@ -109,7 +108,7 @@ def read_data(conn):
 if __name__ == "__main__":
     conn = connect_to_db()
     if conn is not None:
-        create_table(conn)
+        #create_table(conn)
         #insert_data(conn, "var1", 900)
         #insert_data(conn, "var2", 150, today)#
         insert_timeseries(conn, data2)
