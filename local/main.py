@@ -1,7 +1,6 @@
 import psycopg2
 import datetime
 
-today = datetime()
 def connect_to_db():
     try:
         conn = psycopg2.connect(
@@ -18,7 +17,7 @@ def connect_to_db():
 
 #criando a tabela (caso não exista ainda)
 
-#def create_table(conn):
+'''def create_table(conn):
     try:
         cur = conn.cursor()
         cur.execute("""
@@ -29,17 +28,17 @@ def connect_to_db():
         cur.close()
         print('tabela criada')
     except Exception as e:
-        print(f"Erro ao criar tabela: {e}")#
+        print(f"Erro ao criar tabela: {e}")'''
 
 #inserir dados
-def insert_data(conn, nome, valor):
+'''def insert_data(conn, nome, valor):
     try:
         cur = conn.cursor()
         cur.execute("INSERT INTO timeseries (variavel, valor) VALUES (%s, %s)", (nome, valor))
         conn.commit()
         cur.close()
     except Exception as e:
-        print(f"Erro ao inserir dados: {e}")
+        print(f"Erro ao inserir dados: {e}")'''
 
 #ler dados
 def read_data(conn):
@@ -59,7 +58,7 @@ if __name__ == "__main__":
     conn = connect_to_db()
     if conn is not None:
         #create_table(conn)
-        insert_data(conn, "var1", 100, today)
-        insert_data(conn, "var2", 150, today)
+        #insert_data(conn, "var1", 100, today)
+        #insert_data(conn, "var2", 150, today)#
         read_data(conn)
         conn.close()
