@@ -28,7 +28,7 @@ class MindSphere():
             return token_data["access_token"]
         else:
             return "Token não encontrado, ou possível outro erro"
-    
+        print(getBearerToken)
     #Insere um dado ao Asset
     def putTimeSeriesData(self,assetId:str,aspectName:str,payload:dict):
 
