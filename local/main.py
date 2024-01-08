@@ -1,6 +1,8 @@
 import psycopg2
 from datetime import datetime
 from config import MindSphere
+from apscheduler.schedulers.background import BackgroundScheduler
+import atexit
 
 mindsphere = MindSphere(app_Name="cardapiodigita20",
                         app_Version="v1.0.0",
@@ -81,7 +83,7 @@ def insert_timeseries(conn, data):
             timestamp = datetime.fromisoformat(item['_time'].rstrip('Z'))
             for key, value in item.items():
                 if key != '_time':
-                    cur.execute("INSERT INTO teste (variavel, valor, timestamp) VALUES (%s, %s, %s)", (key, value, timestamp))
+                    cur.execute("INSERT INTO timeseries (variavel, valor, timestamp) VALUES (%s, %s, %s)", (key, value, timestamp))
         conn.commit()
         cur.close()
     except Exception as e:
@@ -105,13 +107,31 @@ def read_data(conn):
         print(f"Erro ao ler dados: {e}")
 
 #execução
+        
+def scheduled_task():
+    conn = connect_to_db()
+    if conn is not None:
+        data2 = mindsphere.getTimeSeries(assetId, aspectName, "", "")
+        insert_timeseries(conn, data2)
+        read_data(conn)
+        conn.close()
 
 if __name__ == "__main__":
     conn = connect_to_db()
     if conn is not None:
-        create_table(conn)
-        #insert_data(conn, "var1", 900)
-        #insert_data(conn, "var2", 150, today)#
-        insert_timeseries(conn, data2)
-        read_data(conn)
-        conn.close()
+        scheduler = BackgroundScheduler()
+        scheduler.add_job(scheduled_task, 'interval', minutes=1)  # Executa a cada hora
+        scheduler.start()
+
+        # Desliga o agendador quando o aplicativo encerrar
+        atexit.register(lambda: scheduler.shutdown())
+
+        # Mantém o script em execução
+        while True:
+            pass
+    create_table(conn)
+    #insert_data(conn, "var1", 900)
+    #insert_data(conn, "var2", 150, today)#
+    insert_timeseries(conn, data2)
+    read_data(conn)
+    conn.close()
