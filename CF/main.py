@@ -4,16 +4,16 @@ from config import MindSphere
 from apscheduler.schedulers.background import BackgroundScheduler
 import atexit
 
-mindsphere = MindSphere(app_Name="<app_name>",
+mindsphere = MindSphere(app_Name="cardapiodigita20",
                         app_Version="v1.0.0",
-                        tenant="<tenant>",
-                        gateway_URL="https://gateway.eu1.mindsphere.io/" #Não mexer,
-                        client_ID="<client_id>",
-                        client_Secret="<client_secret>"
+                        tenant="debr2",
+                        gateway_URL="https://gateway.eu1.mindsphere.io/", #Não mexer,
+                        client_ID="debr2-cardapiodigita20-v1.0.0",
+                        client_Secret="KhMlcZVzS8YlfvfuCPDSdENRCEE6gvSaFTadq90kVZ9"
                         )
 
-assetId = "<asset_ID>"
-aspectName = "<aspect>" #
+assetId = "31fd2a70282b44dfa2e27c3b1fc6c4eb"
+aspectName = "varPython" #
 fromDateTime = "2023-07-19T00:00:00Z" # <- exemplo
 toDateTime = "2023-10-16T10:00:00Z"# <- exemplo
 
@@ -22,10 +22,10 @@ print(mindsphere.getTimeSeries(assetId,aspectName,"","")) #retorna o último tim
 def connect_to_db():
     try:
         conn = psycopg2.connect(
-            host="<host>",
-            dbname="<db_name>",
-            password="<password>",
-            user="<user>"
+            host="pod9164fc-psql-master-alias.node.dc1.a9ssvc",
+            dbname="pod9164fc",
+            password="a9sdd5cde722f5f38c623b75cd1d396b71ec49db89e",
+            user="a9s6789382dcc59ed571f89c04d3274cb611f051ac6"
         )
         print('conectado')
         return conn
@@ -63,6 +63,19 @@ def create_table(conn):
         print('tabela criada')
     except Exception as e:
         print(f"Erro ao criar tabela: {e}")
+    
+#deletando a tabela
+'''def delete_table(conn):
+    try:
+        cur = conn.cursor()
+        cur.execute("""
+            DELETE FROM timeseries;
+        """)
+        conn.commit()
+        cur.close()
+        print('tabela zerada')
+    except Exception as e:
+        print(f"Erro ao zerar tabela: {e}")'''
 
 #inserir dados manual
 '''def insert_data(conn, nome, valor):
@@ -95,7 +108,7 @@ data2 = mindsphere.getTimeSeries(assetId,aspectName,"","")
 def read_data(conn):
     try:
         cur = conn.cursor()
-        cur.execute("SELECT * FROM <table_name>")
+        cur.execute("SELECT * FROM timeseries")
         rows = cur.fetchall()
         for row in rows:
             print(row)
@@ -114,11 +127,11 @@ def scheduled_task():
         conn.close()
 
 #inicializar o programa com o agendador
-'''if __name__ == "__main__":
+if __name__ == "__main__":
     conn = connect_to_db()
     if conn is not None:
         scheduler = BackgroundScheduler()
-        scheduler.add_job(scheduled_task, 'interval', minutes=1)  # Executa a cada hora
+        scheduler.add_job(scheduled_task, 'interval', minutes=3)  # Executa a cada hora
         scheduler.start()
 
         # Desliga o agendador quando o aplicativo encerrar
@@ -130,12 +143,13 @@ def scheduled_task():
     #create_table(conn)
     insert_timeseries(conn, data2)
     read_data(conn)
-    conn.close()'''
+    conn.close()
 
     #inicializar o programa s/ agendador
-if __name__ == "__main__":
+'''if __name__ == "__main__":
     conn = connect_to_db()
     #create_table(conn)
+    #delete_table(conn)
     insert_timeseries(conn, data2)
     read_data(conn)
-    conn.close()
+    conn.close()'''
