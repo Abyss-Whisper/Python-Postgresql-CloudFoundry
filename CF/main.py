@@ -4,28 +4,28 @@ from config import MindSphere
 from apscheduler.schedulers.background import BackgroundScheduler
 import atexit
 
-mindsphere = MindSphere(app_Name="cardapiodigita20",
+mindsphere = MindSphere(app_Name="<app_name>",
                         app_Version="v1.0.0",
-                        tenant="debr2",
+                        tenant="<tenant>",
                         gateway_URL="https://gateway.eu1.mindsphere.io/", #Não mexer,
-                        client_ID="debr2-cardapiodigita20-v1.0.0",
-                        client_Secret="KhMlcZVzS8YlfvfuCPDSdENRCEE6gvSaFTadq90kVZ9"
+                        client_ID="<client_id>",
+                        client_Secret="<client_secret>"
                         )
 
-assetId = "31fd2a70282b44dfa2e27c3b1fc6c4eb"
-aspectName = "varPython" #
-fromDateTime = "2023-07-19T00:00:00Z" # <- exemplo
-toDateTime = "2023-10-16T10:00:00Z"# <- exemplo
+assetId = "31fd2a70282b44dfa2e27c3b1fc6c4eb" #insira aqui o assetID do seu asset
+aspectName = "varPython" #insira aqui o aspectName do seu asset
+fromDateTime = "2023-07-19T00:00:00Z" #de
+toDateTime = "2023-10-16T10:00:00Z"#até
 
 print(mindsphere.getTimeSeries(assetId,aspectName,"","")) #retorna o último timestamp disponível
 
 def connect_to_db():
     try:
         conn = psycopg2.connect(
-            host="pod9164fc-psql-master-alias.node.dc1.a9ssvc",
-            dbname="pod9164fc",
-            password="a9sdd5cde722f5f38c623b75cd1d396b71ec49db89e",
-            user="a9s6789382dcc59ed571f89c04d3274cb611f051ac6"
+            dbname="python",
+            user="postgres",
+            password="admin",
+            host="localhost"
         )
         print('conectado')
         return conn
