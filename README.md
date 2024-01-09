@@ -36,7 +36,10 @@ cd Python-Postgresql-CloudFoundry
 ```
 ---
 ## 3 - Configurações do CloudFoundry
-Para configurar todo o CloudFoundry, não é tçao complexo, mas requer atenção:
+### **3.0 - Manifest.yml
+O `manifest.yml` é o Arquivo que será usado para orientar o CloudFoundry a inicializar a aplicação: como `nome`, `tamanho da aplicação`, `instancias`.
+Recomenda-se mudar apenas o `nome` do app, pois esse é que será registrado como `seu app`.
+Para configurar todo o CloudFoundry, não é tão complexo, mas requer atenção:
 ### 3.1 - Instanciando o PostgreSQL
 Você primeiro precisa entender quais pacotes têm na sua Org, para isso, use o seguinte comando:
 ```bash
