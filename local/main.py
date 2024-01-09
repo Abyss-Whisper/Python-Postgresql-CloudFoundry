@@ -4,12 +4,12 @@ from config import MindSphere
 from apscheduler.schedulers.background import BackgroundScheduler
 import atexit
 
-mindsphere = MindSphere(app_Name="cardapiodigita20",
+mindsphere = MindSphere(app_Name="<app_name>",
                         app_Version="v1.0.0",
-                        tenant="debr2",
-                        gateway_URL="https://gateway.eu1.mindsphere.io/" ,
-                        client_ID="debr2-cardapiodigita20-v1.0.0",
-                        client_Secret="KhMlcZVzS8YlfvfuCPDSdENRCEE6gvSaFTadq90kVZ9"
+                        tenant="<tenant>",
+                        gateway_URL="https://gateway.eu1.mindsphere.io/", #Não mexer,
+                        client_ID="<client_id>",
+                        client_Secret="<client_secret>"
                         )
 
 assetId = "31fd2a70282b44dfa2e27c3b1fc6c4eb" #insira aqui o assetID do seu asset
@@ -116,6 +116,7 @@ def scheduled_task():
         read_data(conn)
         conn.close()
 
+#inicializa a execução com o agendador
 if __name__ == "__main__":
     conn = connect_to_db()
     if conn is not None:
@@ -135,3 +136,14 @@ if __name__ == "__main__":
     insert_timeseries(conn, data2)
     read_data(conn)
     conn.close()
+
+#inicializa a execução sem o agendador
+
+'''if __name__ == "__main__":
+    conn = connect_to_db()
+    #create_table(conn)
+    #insert_data(conn, "var1", 900)
+    #insert_data(conn, "var2", 150, today)#
+    insert_timeseries(conn, data2)
+    read_data(conn)
+    conn.close()'''
