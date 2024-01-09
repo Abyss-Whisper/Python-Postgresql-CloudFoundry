@@ -17,7 +17,7 @@ Este projeto foi desenvolvido para facilitar a integração entre a plataforma M
 - PostgreSQL
 - APScheduler
 - CloudFoundry
-
+---
 ## 2. Instalação
 
 ### 2.1 - Pré-requisitos
@@ -34,7 +34,7 @@ Clone o repositório para sua máquina local:
 git clone https://github.com/Abyss-Whisper/Python-Postgresql-CloudFoundry.git
 cd Python-Postgresql-CloudFoundry
 ```
-
+---
 ## 3 - Configurações do CloudFoundry
 Para configurar todo o CloudFoundry, não é tçao complexo, mas requer atenção:
 ### 3.1 - Instanciando o PostgreSQL
@@ -118,7 +118,7 @@ def create_table(conn):
 ### EDITAR TABELA
 ```python
 #editando a tabela
-def create_table(conn):
+def edit_table(conn):
     try:
         cur = conn.cursor()
         cur.execute("""
@@ -135,7 +135,7 @@ def create_table(conn):
 ### LIMPAR TABELA
 ```python
 #zerar a tabela
-'''def delete_table(conn):
+def delete_table(conn):
     try:
         cur = conn.cursor()
         cur.execute("""
@@ -145,20 +145,20 @@ def create_table(conn):
         cur.close()
         print('tabela zerada')
     except Exception as e:
-        print(f"Erro ao zerar tabela: {e}")'''
+        print(f"Erro ao zerar tabela: {e}")
 ```
 
 ### INSERIR DADOS
 ```python
 #inserir dados manual
-'''def insert_data(conn, nome, valor):
+def insert_data(conn, nome, valor):
     try:
         cur = conn.cursor()
         cur.execute("INSERT INTO <table_name> (variavel, valor) VALUES (%s, %s)", (nome, valor))
         conn.commit()
         cur.close()
     except Exception as e:
-        print(f"Erro ao inserir dados: {e}")'''
+        print(f"Erro ao inserir dados: {e}")
 ```
 
 ### INSERIR DADOS (INSIGHTS HUB - OPCIONAL)
@@ -203,13 +203,38 @@ Como não há tutorial ainda, o arquivo `config.py` serve apenas para as APIs do
 - A variavel `data2`, é responsável para armazenar os dados a `API GET` do Insights Hub. Troque esse endpoint caso queira;
 - A função `insert_timeseries`, serve para inserir dados requisitados do Insights Hub para o Postgresql (dados já tratados);
 - A função `scheduled_task`, serve para as tarefas de agendamento, ou seja, para o nosso caso, ele é usado para executar a tarefa de: `ler dados do Insights Hub > Conectar no PostgreSQL > Inserir dados na Tabela > Retornar esses dados da tabela`
+
+### Caso queira rodar apenas na primeira para criar a tabela, rode a última `main`, e habilite as funções: `create_table(conn)`, `insert_timeseries(conn, data2)`, `read_data(conn)`, `conn.close()`. E então, dê o
+```bash
+cf push
+```
+
+```python
+if __name__ == "__main__":
+    conn = connect_to_db()
+    create_table(conn)
+    #delete_table(conn)
+    insert_timeseries(conn, data2)
+    read_data(conn)
+    conn.close()
+```
+
+- Para verificar se está tudo certo, rode o seguinte comando:
+
+```
+cf logs <app_name> --recent
+```
+
+<img width="560" alt="image" src="https://github.com/Abyss-Whisper/Python-Postgresql-CloudFoundry/assets/61059576/e1de48e2-d841-47bf-af98-10dfff69a340">
+
+### Agora, para de fato fazer ela funcionar, habilite o `main` que contem o Agendador
 - Na função `scheduled_task`, a gente pode editar o momento em que ela será executada:
 ```python
 if __name__ == "__main__":
     conn = connect_to_db()
     if conn is not None:
         scheduler = BackgroundScheduler()
-        scheduler.add_job(scheduled_task, 'interval', minutes=3)  # Executa a cada hora
+        scheduler.add_job(scheduled_task, 'interval', minutes=3)  # Executa a cada 3 minutos
         scheduler.start()
 
         # Desliga o agendador quando o aplicativo encerrar
@@ -223,11 +248,6 @@ if __name__ == "__main__":
     read_data(conn)
     conn.close()
 ```
-- Caso queira rodar apenas na primeira para criar a tabela, rode a última `main`, e habilite as funções: `create_table(conn)`, `insert_timeseries(conn, data2)`, `read_data(conn)`, `conn.close()`. E então, dê o
-´´´bash
-cf push
-´´´
-- Para verificar se está tudo certo, rode o seguinte comando:
-```
-cf logs <app_name> --recent
-```
+- E use o `cf push`
+- Ao ver que o app, foi publicado, verifique usando o `cf apps`:
+<img width="559" alt="image" src="https://github.com/Abyss-Whisper/Python-Postgresql-CloudFoundry/assets/61059576/2fd5e9f6-0d99-40c2-b9d6-287770a7bd93">
