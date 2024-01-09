@@ -4,7 +4,7 @@ from config import MindSphere
 from apscheduler.schedulers.background import BackgroundScheduler
 import atexit
 
-mindsphere = MindSphere(app_Name="<app_name>",
+mindsphere = MindSphere(app_Name="card",
                         app_Version="v1.0.0",
                         tenant="<tenant>",
                         gateway_URL="https://gateway.eu1.mindsphere.io/", #Não mexer,
@@ -12,8 +12,8 @@ mindsphere = MindSphere(app_Name="<app_name>",
                         client_Secret="<client_secret>"
                         )
 
-assetId = "31fd2a70282b44dfa2e27c3b1fc6c4eb" #insira aqui o assetID do seu asset
-aspectName = "varPython" #insira aqui o aspectName do seu asset
+assetId = "<asset_ID>" #insira aqui o assetID do seu asset
+aspectName = "<aspect_ID>" #insira aqui o aspectName do seu asset
 fromDateTime = "2023-07-19T00:00:00Z" #de
 toDateTime = "2023-10-16T10:00:00Z"#até
 
@@ -60,9 +60,9 @@ def create_table(conn):
         """)
         conn.commit()
         cur.close()
-        print('tabela criada')
+        print('tabela editada')
     except Exception as e:
-        print(f"Erro ao criar tabela: {e}")
+        print(f"Erro ao editar tabela: {e}")
     
 #deletando a tabela
 '''def delete_table(conn):
@@ -127,7 +127,7 @@ def scheduled_task():
         conn.close()
 
 #inicializar o programa com o agendador
-if __name__ == "__main__":
+'''if __name__ == "__main__":
     conn = connect_to_db()
     if conn is not None:
         scheduler = BackgroundScheduler()
@@ -143,13 +143,13 @@ if __name__ == "__main__":
     #create_table(conn)
     insert_timeseries(conn, data2)
     read_data(conn)
-    conn.close()
+    conn.close()'''
 
     #inicializar o programa s/ agendador
-'''if __name__ == "__main__":
+if __name__ == "__main__":
     conn = connect_to_db()
-    #create_table(conn)
+    create_table(conn)
     #delete_table(conn)
     insert_timeseries(conn, data2)
     read_data(conn)
-    conn.close()'''
+    conn.close()
